@@ -21,11 +21,12 @@ class WallGetPost():
             time.sleep(1)
             for public in self.dbWall.getPublics():
                 postDict=self.vk.wall.get(owner_id="-" + str(public['public_id']))
-                last_post= postDict['items'][0]['id']
+                last_post= postDict['items'][0]
                 if ('is_pinned' in postDict['items'][0]):
-                    last_post = postDict['items'][1]['id']
+                    last_post = postDict['items'][1]
                     if (postDict['items'][0]['is_pinned']==0):
-                        last_post = postDict['items'][0]['id']
+                        last_post = postDict['items'][0]
+                print(last_post)
                 if public['last_post_id'] != last_post:
-                    self.dbWall.addLastPost(public['public_id'], int(last_post))
+                    self.dbWall.addLastPost(public['public_id'], int(last_post['id']))
                     print(last_post)
