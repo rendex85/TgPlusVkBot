@@ -4,7 +4,8 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 
 from DataBase.PublicWorker import *
 from WallGetter.WallGet import *
-
+import logging
+logging.basicConfig(filename='app.log', filemode='w')
 vk_session = vk_api.VkApi(token=token)
 longpoll = VkBotLongPoll(vk_session, public)
 vk = vk_session.get_api()
@@ -29,7 +30,12 @@ def main():
 
 
 if __name__ == '__main__':
+
     wall = WallGetPost()
     poster = threading.Thread(target=wall.postMonitoring)
     poster.start()
-    main()
+    while True:
+        try:
+            main()
+        except Exception:
+            logging.error("Fatal error in main loop", exc_info=True)
