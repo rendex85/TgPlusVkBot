@@ -16,5 +16,9 @@ class PostingBot():
         message = "Название паблика: "+publicName+" \nОригинальный пост: " + url
         if (text != ""):
             message += ' \n Текст поста: "' + text + '"'
+        if publicName=="Как правильно воровать картинки":
+            message=text
         media_append[0] = telebot.types.InputMediaPhoto(image_set[0], message)
         self.bot.send_media_group(self.channel, media_append)
+    def postNews(self, text):
+        self.bot.send_message(self.channel, text)

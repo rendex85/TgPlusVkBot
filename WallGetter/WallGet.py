@@ -23,7 +23,7 @@ class WallGetPost():
             time.sleep(1)
             for public in self.dbWall.getPublics():
                 postDict = self.vk.wall.get(owner_id="-" + str(public['public_id']))
-                print(postDict)
+                #print(postDict)
                 last_post = postDict['items'][0]
                 if ('is_pinned' in postDict['items'][0]):
                     last_post = postDict['items'][1]
@@ -32,6 +32,7 @@ class WallGetPost():
                 #print(last_post)
                 if public['last_post_id'] != last_post['id']:
                     postTg = PostingBot()
+
                     image_set = []
                     postText = last_post['text']
                     if 'attachments' in last_post:
@@ -45,5 +46,6 @@ class WallGetPost():
                             postUrl = "vk.com/wall" + "-" + str(public['public_id']) + "_" + str(last_post['id'])
                             postTg.postMedia(image_set, postText, postUrl, str(public['public_name']))
                             time.sleep(1)
-
+                    elif public['public_id']==198185570:
+                        postTg.postNews(postText)
                     self.dbWall.addLastPost(public['public_id'], int(last_post['id']))
