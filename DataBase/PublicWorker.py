@@ -37,7 +37,7 @@ class PublicDbWorker():
 class WorkWithWall():
     def getPublics(self):
         publics = []
-        query = Publics.select(Publics.public_id, Publics.last_post_id, Publics.public_name)
+        query = Publics.select(Publics.public_id, Publics.last_post_id, Publics.public_name, Publics.public_url)
         result = query.dicts().execute()
         for row in result:
             publics.append(row)
@@ -47,3 +47,8 @@ class WorkWithWall():
     def addLastPost(self, publicId, postId):
         Publics.update(last_post_id=postId).where(Publics.public_id == publicId).execute()
         closeConnect()
+    def publicList(self):
+        publicString="Список пабликов: \n"
+        for public in self.getPublics():
+            publicString+=str(public['public_name']) +": "+str(public['public_url'])+"\n"
+        return publicString
