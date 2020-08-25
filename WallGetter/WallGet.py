@@ -23,6 +23,7 @@ class WallGetPost():
             time.sleep(1)
             for public in self.dbWall.getPublics():
                 postDict = self.vk.wall.get(owner_id="-" + str(public['public_id']))
+                print(postDict)
                 last_post = postDict['items'][0]
                 if ('is_pinned' in postDict['items'][0]):
                     last_post = postDict['items'][1]
@@ -40,9 +41,9 @@ class WallGetPost():
                                 session = requests.Session()
                                 img = session.get(photo_url, stream=True)
                                 image_set.append(img.raw)
-                        if len(image_set)>0:
-                            postUrl="vk.com/wall"+"-"+str(public['public_id'])+"_"+str(last_post['id'])
-                            postTg.postMedia(image_set, postText, postUrl)
+                        if len(image_set) > 0:
+                            postUrl = "vk.com/wall" + "-" + str(public['public_id']) + "_" + str(last_post['id'])
+                            postTg.postMedia(image_set, postText, postUrl, str(public['public_name']))
                             time.sleep(1)
 
                     self.dbWall.addLastPost(public['public_id'], int(last_post['id']))

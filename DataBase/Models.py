@@ -22,6 +22,7 @@ class Publics(BaseModel):
     public_id = IntegerField(column_name='public_id', primary_key=True)
     public_url = TextField(column_name='public_url')
     last_post_id = IntegerField(column_name='last_post_id')
+    public_name = TextField(column_name='public_name')
 
     class Meta:
         database = conn

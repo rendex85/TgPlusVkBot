@@ -16,9 +16,11 @@ class PublicDbWorker():
                 self.public = self.msg[strtssyl + len("vk.com/"): endssyl]
         public_info = vk.groups.getById(group_id=self.public, fields='counters')
         self.public = public_info[0]['id']
+        self.public_name = public_info[0]['name']
 
     def addPublic(self):
-        Publics.insert(public_id=int(self.public), public_url=self.msg[self.msg.find("vk.com/"):]).execute()
+        Publics.insert(public_id=int(self.public), public_url=self.msg[self.msg.find("vk.com/"):],
+                       public_name=self.public_name).execute()
         self.vk.messages.send(peer_id=self.peer_id, random_id=0,
                               message="Паблик " + self.msg[self.msg.find("vk.com/"):] + " успешно добавлен в пулл")
         closeConnect()
@@ -31,15 +33,17 @@ class PublicDbWorker():
                               message="Паблик " + publicName + " успешно убран из пулла")
         closeConnect()
 
+
 class WorkWithWall():
     def getPublics(self):
         publics = []
-        query = Publics.select(Publics.public_id, Publics.last_post_id)
+        query = Publics.select(Publics.public_id, Publics.last_post_id, Publics.public_name)
         result = query.dicts().execute()
         for row in result:
             publics.append(row)
         closeConnect()
         return publics
-    def addLastPost(self, publicId,postId):
-        Publics.update(last_post_id=postId).where(Publics.public_id==publicId).execute()
+
+    def addLastPost(self, publicId, postId):
+        Publics.update(last_post_id=postId).where(Publics.public_id == publicId).execute()
         closeConnect()

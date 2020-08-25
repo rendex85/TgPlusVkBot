@@ -8,7 +8,13 @@ class PostingBot():
         self.bot = telebot.TeleBot(tg_token)
         self.channel = tg_channel
 
-    def postMedia(self, image_set, text, url):
-        #self.bot.send_photo(self.channel, image, text)
-        self.bot.send_media_group(self.channel, [telebot.types.InputMediaPhoto(photo) for photo in image_set], text_msg)
-
+    def postMedia(self, image_set, text, url, publicName):
+        # self.bot.send_photo(self.channel, image, text)
+        media_append = []
+        for photo in image_set:
+            media_append.append(telebot.types.InputMediaPhoto(photo))
+        message = "Название паблика: "+publicName+" \nОригинальный пост: " + url
+        if (text != ""):
+            message += ' \n Текст поста: "' + text + '"'
+        media_append[0] = telebot.types.InputMediaPhoto(image_set[0], message)
+        self.bot.send_media_group(self.channel, media_append)
