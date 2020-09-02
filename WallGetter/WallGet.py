@@ -21,6 +21,7 @@ class WallGetPost():
 
     def postMonitoring(self):
         while True:
+            time.sleep(300)
             try:
                 for public in self.dbWall.getPublics():
                     postDict = self.vk.wall.get(owner_id="-" + str(public['public_id']))
@@ -49,6 +50,5 @@ class WallGetPost():
                         elif public['public_id']==198185570:
                             postTg.postNews(postText)
                         self.dbWall.addLastPost(public['public_id'], int(last_post['id']))
-                time.sleep(300)
             except Exception:
                 logging.error("Fatal error in post loop", exc_info=True)

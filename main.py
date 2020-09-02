@@ -34,6 +34,7 @@ if __name__ == '__main__':
     wall = WallGetPost()
     poster = threading.Thread(target=wall.postMonitoring)
     poster.start()
+    poster.join()
     while True:
         try:
             main()
