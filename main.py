@@ -34,9 +34,10 @@ if __name__ == '__main__':
     wall = WallGetPost()
     poster = threading.Thread(target=wall.postMonitoring)
     poster.start()
-    poster.join()
+
     while True:
         try:
             main()
         except Exception:
+            poster.join()
             logging.error("Fatal error in main loop", exc_info=True)
